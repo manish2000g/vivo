@@ -1,0 +1,154 @@
+@font-face {
+  font-family: Vivo;
+  font-weight: lighter;
+  src: url(../fonts/vivo-Light.otf);
+}
+@font-face {
+  font-family: Vivo;
+  font-weight:normal;
+  src: url(../fonts/vivo-Regular.otf);
+}
+@font-face {
+  font-family: Vivo;
+  font-weight:bolder;
+  src: url(../fonts/vivo-Bold.otf);
+}
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  color: rgb(0, 0, 0);
+}
+*{
+  font-family: 'Vivo' !important;
+  font-weight: normal;
+  box-sizing: border-box;
+}
+
+.bgimg-1 {
+  position: relative;
+  background-position: center;
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+.bgimg-1 {
+  background-image: url('../bckg.jpg');
+  max-width: 100%;
+  height: 112%;
+}
+.form-control:active,.form-control:focus{
+  box-shadow: none !important;
+  outline: 0px !important;
+  border-color: green;
+}
+.mt-5rem{
+  margin-top: 4.5rem !important;
+}
+.bgimg-11 {
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('../background.jpg');
+  max-width: 100%;
+  height: 100%;
+}
+.mt-minee{
+  margin-top: 17rem !important;
+}
+/* 774c15 */
+.btn-mine{
+  background-color: #774c15 !important;
+}
+.btn-mine:hover{
+  background-color: #774c15 !important;
+}
+
+.border-nonee{
+  border: 0px solid black !important;
+}
+.caption {
+  position: absolute;
+  left: 0;
+  top: 5%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.caption span.border {
+  background-color: #111;
+  color: rgb(0, 0, 0);
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+h3 {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #111;
+  font-weight: bolder;
+}
+.poss{
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+}
+canvas {
+  position: absolute;
+  top: 0;
+}
+.img-fluid2{
+  max-width: 50%;
+  height: auto;
+}
+.gift {
+  margin: 0 auto;
+}
+
+.form {
+  text-align: left;
+}
+
+.card {
+  margin: 0 auto;
+}
+
+.card {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+}
+
+.popup {
+  font-size: 24px;
+  color: rgb(0, 0, 0);
+  font-weight: 900;
+}
+.popup2 {
+  font-size: 24px;
+  letter-spacing: 0.1 !important;
+  color: rgb(0, 0, 0);
+  font-weight: 900;
+}
+.form-control{
+  padding: 1rem;
+}
+
+.text {
+  font-size: larger;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+}
