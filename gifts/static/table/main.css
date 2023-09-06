@@ -6,12 +6,23 @@
     margin-bottom: 20px;
 }
 
+.dataTables_length{
+    margin-top: 10px;
+}
+
+.dataTables_filter{
+    margin-top: 10px;
+}
 .myTable{
     font-size: 12px;
     min-width: 400px;
     overflow: hidden;
     border-radius: 7px 7px 0 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .15);
+    box-shadow: 0 0 20px rgba(239, 5, 5, 0.948);
+}
+body{
+    overflow-x: hidden;
+    border-color: red;
 }
 
 .myTable th {
@@ -26,7 +37,6 @@
   
 .myTable tr:nth-child(even){background-color: #f9f8f8;}
 
-/* Formats the text*/ 
 #ourtable3_filter,
 #ourtable3_length,
 #ourtable3_info,
@@ -58,6 +68,47 @@
     width: 98%;
     border-radius: 5px;
 }
+.titleholder{
+    display: flex;
+    justify-content: center;
+}
+
+
+
+
+
+.navbar{
+    background-color: #4267B2;
+    color: white;
+}
+.dashboard{
+margin-right: 700px;
+}
+
+.home{
+    text-decoration: none;
+color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .ourbutton{
     margin-right: 10px;
     margin-left: 10px;
@@ -87,8 +138,9 @@
 }
 
 .title{
+   
     color: white;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     font-weight: bold;
     font-size: 15px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -109,20 +161,62 @@
 
 }
 
-/* Custom button style */
-.btn-custom {
-    background-color: #2200ff; /* Primary button color */
-    color: #fff; /* Text color */
-    border: none; /* Remove button border */
-    border-radius: 4px; /* Add rounded corners */
-    padding: 10px 20px; /* Adjust padding as needed */
-    margin-right: 10px; /* Add margin between buttons */
-    font-size: 16px; /* Adjust font size */
-    cursor: pointer; /* Add pointer cursor */
-    transition: background-color 0.3s ease; /* Smooth background color transition */
+.btn-custom1 {
+    background-color: #281b4e; 
+    color: #fff; 
+    border: none; 
+    border-radius: 4px; 
+    padding: 10px 20px; 
+    margin-right: 10px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
 }
 
-/* Custom button style on hover */
-.btn-custom:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+.btn-custom2 {
+    background-color: #281b4e; 
+    color: #fff; 
+    border: none; 
+    border-radius: 4px; 
+    padding: 10px 20px; 
+    margin-right: 10px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.btn-custom3 {
+    background-color: #281b4e; 
+    color: #fff; 
+    border: none; 
+    border-radius: 4px; 
+    padding: 10px 20px; 
+    margin-right: 10px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.btn-custom1:hover {
+opacity: 0.7;
+}
+.manu{
+    display: flex;
+    justify-content: center;
+}
+.btn-custom2:hover {
+    opacity: 0.7;
+    }
+
+.btn-custom3:hover {
+    opacity: 0.7;
+    }
+
+.btn-darki{
+    background-color: #c24f4f;
+    color: white
+}
+
+.btn-darki:hover{
+    opacity: 0.7;
 }

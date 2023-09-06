@@ -1,66 +1,122 @@
-{% extends 'base.html' %}
-{% block content %}
-    <div class="pageholder">
-        <div class="titleholder"> 
-            <a class="ourbutton mr-2 ml-2" href="{% url 'home'%}"> To home</a>
-            <div class="title"><i class="fa-solid fa-table"></i> Vivo Customer Dashboard </div> 
-        </div>
+{% extends 'base.html' %} {% block content %}
 
-        <div class="linkholder">
-            <table id="ourtable2" class="beheertable dezetabel">
-                <thead>
-                    <tr>
-                        <th>Customer Name</th>
-                        <th>Shop Name</th>
-                        <th>Sold Area</th>
-                        <th>Phone Number</th>
-                        <th>Phone Model</th>
-                        <th>Sale Status</th>
-                        <th>Prize Details</th>
-                        <th>IMEI</th>
-                        <th>Gift</th>
-                        <th>Date of Purchase</th>
-                        <th>How Know About Campaign</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <div class="btn-group mt-3">
-            <button id="filterAllCustomersButton" class="btn btn-custom mr-2">All Customers</button>
-            <button id="filterWithGiftsButton" class="btn btn-custom mr-2">Customers with Gifts</button>
-            <button id="filterWithoutGiftsButton" class="btn btn-custom mr-2">Customers without Gifts</button>
-        </div>        
-        <div class="btn-group mt-3">
-            <button id="csvDownloadButton" class="btn btn-dark">
-                <i class="bi bi-file-earmark-spreadsheet"></i> Download CSV
-            </button>
-        </div>
-        
+<div class="container-fluid">
+  <div class="navbar">
+    <a href="{% url 'home'%}" class="aml">
+      <div class="home">Home</div>
+    </a>
+    <div class="dashboard">Vivo Customer Dashboard</div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="btn-group">
+        <button id="filterAllCustomersButton" class="btn btn-custom1 mr-2">
+          All Customers
+        </button>
+        <button id="filterWithGiftsButton" class="btn btn-custom2 mr-2">
+          Customers with Gifts
+        </button>
+        <button id="filterWithoutGiftsButton" class="btn btn-custom3 mr-2">
+          Customers without Gifts
+        </button>
+      </div>
+      <div class="btn-group">
+        <button id="csvDownloadButton" class="btn btn-darki">
+          <i class="bi bi-file-earmark-spreadsheet"></i> Download CSV
+        </button>
+      </div>
     </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="linkholder">
+        <table id="ourtable2" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Shop Name</th>
+              <th>Sold Area</th>
+              <th>Phone Number</th>
+              <th>Phone Model</th>
+              <th>Sale Status</th>
+              <th>Prize Details</th>
+              <th>IMEI</th>
+              <th>Gift</th>
+              <th>Date of Purchase</th>
+              <th>How Know About Campaign</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Customer Name</th>
+              <th>Shop Name</th>
+              <th>Sold Area</th>
+              <th>Phone Number</th>
+              <th>Phone Model</th>
+              <th>Sale Status</th>
+              <th>Prize Details</th>
+              <th>IMEI</th>
+              <th>Gift</th>
+              <th>Date of Purchase</th>
+              <th>How Know About Campaign</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
+<script>
+  var data = JSON.parse("{{data|escapejs}}");
 
-<script  >
-    var data = JSON.parse("{{data|escapejs}}");
+  $(document).ready(function () {
+    var table = $("#ourtable2").DataTable({
+      data: data,
+      columns: [
+        { data: "customer_name" },
+        { data: "shop_name" },
+        { data: "sold_area" },
+        { data: "phone_number" },
+        { data: "phone_model" },
+        { data: "sale_status" },
+        { data: "prize_details" },
+        { data: "imei" },
+        { data: "gift__name" },
+        { data: "date_of_purchase" },
+        { data: "how_know_about_campaign" },
+      ],
+      initComplete: function () {
+        this.api()
+          .columns()
+          .every(function () {
+            let column = this;
 
-    $(document).ready(function() {
-        var table = $('#ourtable2').DataTable({
-           data: data,
-            "columns": [
-                { "data": "customer_name" },
-                { "data": "shop_name" },
-                { "data": "sold_area" },
-                { "data": "phone_number" },
-                { "data": "phone_model" },
-                { "data": "sale_status" },
-                { "data": "prize_details" },
-                { "data": "imei" },
-                { "data": "gift__name" },
-                { "data": "date_of_purchase" },
-                { "data": "how_know_about_campaign" },
-                ],
-        });
+            // Create select element
+            let select = document.createElement("select");
+            select.add(new Option(""));
+            column.footer().replaceChildren(select);
 
-                // Add event listeners for your filtering buttons
+            // Apply listener for user change in value
+            select.addEventListener("change", function () {
+              var val = DataTable.util.escapeRegex(select.value);
+
+              column.search(val ? "^" + val + "$" : "", true, false).draw();
+            });
+
+            // Add list of options
+            column
+              .data()
+              .unique()
+              .sort()
+              .each(function (d, j) {
+                select.add(new Option(d));
+              });
+          });
+      },
+    });
+
+              // Add event listeners for your filtering buttons
         $('#filterAllCustomersButton').on('click', function() {
             table.column(9).search('').draw();
         });
@@ -78,36 +134,38 @@
             // Extract DataTable data and format it as CSV
             var csvData = '';
 
-            // Get the header row
-            var headerRow = table.columns().header().toArray();
-            var headerData = headerRow.map(function(headerCell) {
-                return headerCell.textContent;
-            });
-            csvData += headerData.join(',') + '\n';
 
-            // Get the table data
-            table.rows().every(function(rowIdx, tableLoop, rowLoop) {
-                var rowData = this.data();
-                var rowValues = Object.values(rowData);
-                csvData += rowValues.join(',') + '\n';
-            });
+      // Get the header row
+      var headerRow = table.columns().header().toArray();
+      var headerData = headerRow.map(function (headerCell) {
+        return headerCell.textContent;
+      });
+      csvData += headerData.join(",") + "\n";
 
-            // Create a Blob containing the CSV data
-            var blob = new Blob([csvData], { type: 'text/csv;charset=utf-8' });
+      // Get the table data
+      table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+        var rowData = this.data();
+        var rowValues = Object.values(rowData);
+        csvData += rowValues.join(",") + "\n";
+      });
 
-            // Create a temporary link element to trigger the download
-            var a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'data.csv';
-            a.style.display = 'none';
-            document.body.appendChild(a);
+      // Create a Blob containing the CSV data
+      var blob = new Blob([csvData], { type: "text/csv;charset=utf-8" });
 
-            // Trigger the click event to download the CSV
-            a.click();
+      // Create a temporary link element to trigger the download
+      var a = document.createElement("a");
+      a.href = window.URL.createObjectURL(blob);
+      a.download = "data.csv";
+      a.style.display = "none";
+      document.body.appendChild(a);
 
-            // Clean up
-            document.body.removeChild(a);
-        });
+      // Trigger the click event to download the CSV
+      a.click();
+
+      // Clean up
+      document.body.removeChild(a);
     });
+  });
 </script>
+
 {% endblock %}
