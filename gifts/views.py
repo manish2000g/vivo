@@ -121,7 +121,7 @@ def upload_recharge_cards(request):
                 )
                 recharge_card.save()
 
-            return redirect('upload_success')
+            return redirect('table2')
 
     return render(request, 'upload_recharge_cards.html')
 
@@ -351,9 +351,12 @@ def registerCustomer(request):
                 "error": "Invalid IMEI no entered"
             }
             return render(request, "index.html", ctx)
+        
+        print(phone_model)
+        phone_modell = MobilePhone.objects.get(id=phone_model)
 
         customer = Customer.objects.create(customer_name=customer_name, phone_number=contact_number, shop_name=shop_name, sold_area=sold_area,
-                                           phone_model=phone_model, sale_status="SOLD", imei=imei_number, how_know_about_campaign=how_know_about_campaign)
+                                           phone_model=phone_modell, sale_status="SOLD", imei=imei_number, how_know_about_campaign=how_know_about_campaign)
         customer.save()
         imeiii = IMEINO.objects.get(imei_no=imei_number)
         imeiii.used = True

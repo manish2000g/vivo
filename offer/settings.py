@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'gifts',
     'corsheaders',
     'drf_multiple_model',
-    'ajax_datatable',
 ]
 
 MIDDLEWARE = [

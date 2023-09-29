@@ -103,7 +103,7 @@ class Customer(models.Model):
     date_of_purchase = models.DateField(auto_now_add=True, auto_now=False)
     how_know_about_campaign = models.CharField(
         max_length=800, choices=CAMPAIGN_CHOICES)
-    recharge_card = models.ForeignKey(RechargeCard, on_delete=models.CASCADE)
+    recharge_card = models.ForeignKey(RechargeCard, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.customer_name
