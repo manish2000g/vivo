@@ -63,7 +63,7 @@
                                              <select class="form-select" id="phoneModel" name="phone_model">
                                                   <option value="" >-- Select a Phone Model --</option>
                                                   {% for phone_model in phone_models %}
-                                                       <option value="{{ phone_model.id }}" style="color: black;">{{ phone_model.modelname }}</option>
+                                                       <option value="{{ phone_model.id }}">{{ phone_model.phone_model }}</option>
                                                   {% endfor %}
                                              </select>
                                         </div>

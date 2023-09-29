@@ -18,8 +18,11 @@ from datetime import date, datetime
 
 def index(request):
     phone_models = MobilePhone.objects.all()
-    return render(request, 'index.html', {'phone_models': phone_models})
 
+    context = {
+        'phone_models': phone_models,
+    }
+    return render(request, 'index.html', context)
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
