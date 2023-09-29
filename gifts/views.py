@@ -32,14 +32,6 @@ def json_serial(obj):
     raise TypeError("Type %s not serializable" % type(obj))
 
 
-def adminIndex(request):
-    customerss = Customer.objects.all()
-    ctx = {
-        "customers": customerss
-    }
-    return render(request, "admin2/index.html", ctx)
-
-
 def indexWithError(request):
     ctx = {
         "error": "Invalid IMEI"
@@ -147,7 +139,7 @@ def customerlists():
     return JsonResponse(datalist, safe=False)
 
 
-def table2(request):
+def adminIndex(request):
     datalist = list(Customer.objects.all().values('customer_name', 'shop_name', 'sold_area', 'phone_number', 'phone_model',
                     'sale_status', 'prize_details', 'imei', 'gift__name', 'date_of_purchase', 'how_know_about_campaign'))
     data = dumps(datalist, default=json_serial)

@@ -1,57 +1,81 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-     <!-- Required meta tags -->
-     <meta charset="utf-8" />
-     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <title>Lucky Draw</title>
+  </head>
 
-     <!-- Bootstrap CSS -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-
-     <title>Lucky Draw</title>
-</head>
-
-<body>
-     {% if customer.gift %}
-     <div class="bgimg-11">
-          <div class="caption">
-               <div class="container mt-minee">
-                    <div class="card border-nonee" style="max-width: 80rem">
-                         <div class="card-body">
-                              <h4 class="popup2">{{customer.customer_name}}</span>
-                         </div>
-                         <div class="d-flex flex-column">
-                              <img class="gift img-fluid2 mb-5"
-                                   src="https://vivodashain.com/media/{{customer.gift.image_url}}" alt="Gift Image" />
-                              <button class="btn btn-dark btn-mine border-0 btn-lg">
-                                   You have won {{customer.gift.name}}
-                              </button>
-                         </div>
-                    </div>
-               </div>
+  <body>
+    {% if customer.gift %}
+    <div class="bgimg-11">
+      <div class="caption">
+        <div class="container mt-minee">
+          <div class="card border-nonee" style="max-width: 80rem">
+            <div class="card-body">
+              <h4 class="popup2">{{customer.customer_name}}</h4>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                class="gift img-fluid2 mb-5"
+                src="https://vivodashain.com/media/{{customer.gift.image_url}}"
+                alt="Gift Image"
+              />
+              <button class="btn btn-dark btn-mine border-0 btn-lg">
+                You have won {{customer.gift.name}}
+              </button>
+            </div>
           </div>
-     </div>
-     {% else %}
-     <div class="bgimg-1">
-          <div class="caption">
-               <div class="container mt-minee">
-                    <h1 class="popup2">Happy Vivo Sales Carnival 2022</h1>
-               </div>
-          </div>
-     </div>
-     {% endif %}
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="bgimg-1">
+      <div class="caption">
+        <div class="container mt-minee">
+          <h1 class="popup2">Happy Vivo Sales Carnival 2022</h1>
+          {% if customer.recharge_card %}
+          <p class="popup2">
+            Congratulations! You have also won a recharge card.
+          </p>
+          <p class="popup2">
+            Recharge Card Number: {{ customer.recharge_card.cardno }}
+          </p>
+          <p class="popup2">
+            Recharge Card Provider: {{ customer.recharge_card.provider }}
+          </p>
+          <p class="popup2">
+            Recharge Card Amount: Rs.{{ customer.recharge_card.amount }}
+          </p>
+          {% else %}
+          <p class="popup2">
+            Unfortunately, you didn't win a gift, but you have won a recharge
+            card.
+          </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-          crossorigin="anonymous"></script>
-     <script type="text/javascript" src="{% static 'js/confetti.js' %}"></script>
-     <script type="text/javascript">
-          startConfetti();
-     </script>
-</body>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="{% static 'js/confetti.js' %}"></script>
+    <script type="text/javascript">
+      startConfetti();
+    </script>
+  </body>
 </html>
