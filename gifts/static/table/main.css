@@ -90,25 +90,6 @@ margin-right: 700px;
 color: white;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .ourbutton{
     margin-right: 10px;
     margin-left: 10px;
@@ -161,7 +142,8 @@ color: white;
 
 }
 
-.btn-custom1 {
+
+.btn-primary {
     background-color: #281b4e; 
     color: #fff; 
     border: none; 
@@ -173,7 +155,14 @@ color: white;
     transition: background-color 0.3s ease; 
 }
 
-.btn-custom2 {
+.filterdate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 20px;    
+}
+.btn-secondary {
     background-color: #281b4e; 
     color: #fff; 
     border: none; 
@@ -185,32 +174,14 @@ color: white;
     transition: background-color 0.3s ease; 
 }
 
-.btn-custom3 {
-    background-color: #281b4e; 
-    color: #fff; 
-    border: none; 
-    border-radius: 4px; 
-    padding: 10px 20px; 
-    margin-right: 10px; 
-    font-size: 16px; 
-    cursor: pointer; 
-    transition: background-color 0.3s ease; 
-}
-
-.btn-custom1:hover {
+.btn-primary:hover {
 opacity: 0.7;
 }
+
 .manu{
     display: flex;
     justify-content: center;
 }
-.btn-custom2:hover {
-    opacity: 0.7;
-    }
-
-.btn-custom3:hover {
-    opacity: 0.7;
-    }
 
 .btn-darki{
     background-color: #c24f4f;
@@ -220,3 +191,5 @@ opacity: 0.7;
 .btn-darki:hover{
     opacity: 0.7;
 }
+
+

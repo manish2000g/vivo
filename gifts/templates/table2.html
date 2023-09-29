@@ -1,35 +1,102 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="container-fluid">
-  <div class="navbar">
-    <a href="{% url 'home'%}" class="aml">
-      <div class="home">Home</div>
-    </a>
-    <div class="dashboard">Vivo Customer Dashboard</div>
-  </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+
+    <!-- Button Toggler for Mobile View -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item mr-2">
+          <a
+            class="nav-link btn btn-outline-info"
+            href="{% url 'upload_recharge_cards' %}"
+            style="color: white"
+          >
+            Upload Recharge Cards
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link btn btn-outline-info"
+            href="{% url 'uploadimei' %}"
+            style="color: white"
+          >
+            Upload IMEI Numbers
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
   <div class="row mt-3">
     <div class="col-12">
       <div class="btn-group">
-        <button id="filterAllCustomersButton" class="btn btn-custom1 mr-2">
-          All Customers
-        </button>
-        <button id="filterWithGiftsButton" class="btn btn-custom2 mr-2">
-          Customers with Gifts
-        </button>
-        <button id="filterWithoutGiftsButton" class="btn btn-custom3 mr-2">
-          Customers without Gifts
-        </button>
-      </div>
-      <div class="btn-group">
-        <button id="csvDownloadButton" class="btn btn-darki">
-          <i class="bi bi-file-earmark-spreadsheet"></i> Download CSV
+        <a
+          href="{% url 'download_customers_with_gifts' %}?start_date="
+          id="downloadWithGiftsLink"
+          class="btn btn-secondary mr-2"
+        >
+          Download Customers with Gifts
+        </a>
+        <a
+          href="{% url 'download_customers_without_gifts' %}?start_date="
+          id="downloadWithoutGiftsLink"
+          class="btn btn-secondary mr-2"
+        >
+          Download Customers without Gifts
+        </a>
+        <button id="csvDownloadButton" class="btn btn-danger">
+          <i class="bi bi-file-earmark-spreadsheet"></i> Download All Data
         </button>
       </div>
     </div>
   </div>
+
   <div class="row mt-3">
     <div class="col-12">
-      <div class="linkholder">
+      <form method="get" action="" class="form-inline">
+        <div class="form-group mr-2">
+          <label for="start_date" class="mr-2">Start Date:</label>
+          <input
+            type="date"
+            name="start_date"
+            id="start_date"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group mr-2">
+          <label for="end_date" class="mr-2">End Date:</label>
+          <input
+            type="date"
+            name="end_date"
+            id="end_date"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <button id="showAllCustomersButton" class="btn btn-secondary ml-2">
+          Show All Customers
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="table-responsive">
         <table id="ourtable2" class="table table-striped table-bordered">
           <thead>
             <tr>
@@ -43,7 +110,8 @@
               <th>IMEI</th>
               <th>Gift</th>
               <th>Date of Purchase</th>
-              <th>How Know About Campaign</th>
+              <th>How You Know About Campaign</th>
+              <th>Recharge Card</th>
             </tr>
           </thead>
           <tfoot>
@@ -59,6 +127,7 @@
               <th>Gift</th>
               <th>Date of Purchase</th>
               <th>How Know About Campaign</th>
+              <th>Recharge Card</th>
             </tr>
           </tfoot>
         </table>
@@ -85,6 +154,17 @@
         { data: "gift__name" },
         { data: "date_of_purchase" },
         { data: "how_know_about_campaign" },
+        {
+          data: null,
+          render: function (data, type, row) {
+            // Check if the customer didn't receive a gift
+            if (!data.gift__name) {
+              return "Recharge Card";
+            } else {
+              return "";
+            }
+          },
+        },
       ],
       initComplete: function () {
         this.api()
@@ -98,6 +178,7 @@
             column.footer().replaceChildren(select);
 
             // Apply listener for user change in value
+
             select.addEventListener("change", function () {
               var val = DataTable.util.escapeRegex(select.value);
 
@@ -116,24 +197,97 @@
       },
     });
 
-              // Add event listeners for your filtering buttons
-        $('#filterAllCustomersButton').on('click', function() {
-            table.column(9).search('').draw();
+    // Handle form submission for date range filtering
+    $("form").on("submit", function (e) {
+      e.preventDefault();
+
+      var start_date = $("#start_date").val();
+      var end_date = $("#end_date").val();
+
+      // Apply date range filtering when the form is submitted
+      // Create a custom filtering function
+      $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        var startDate = $("#start_date").val();
+        var endDate = $("#end_date").val();
+        var purchaseDate = data[9]; // Assuming date_of_purchase is in the 10th column (index 9)
+
+        if (!startDate && !endDate) {
+          // If no date range is specified, display all rows
+          return true;
+        }
+
+        if (!startDate || !endDate) {
+          // If either the start or end date is not specified, do not filter this row
+          return true;
+        }
+
+        // Convert the dates to timestamps for comparison
+        var startTimestamp = new Date(startDate).getTime();
+        var endTimestamp = new Date(endDate).getTime();
+        var purchaseTimestamp = new Date(purchaseDate).getTime();
+
+        // Check if the purchase date is within the specified date range
+        return (
+          purchaseTimestamp >= startTimestamp &&
+          purchaseTimestamp <= endTimestamp
+        );
+      });
+
+      $(document).ready(function () {
+        var table = $("#ourtable2").DataTable({
+          data: data,
+          columns: [
+            // ... your column definitions here ...
+          ],
+          initComplete: function () {
+            // ... your initComplete code here ...
+          },
         });
 
-        $('#filterWithGiftsButton').on('click', function() {
-            table.column(9).search('customers_with_gifts').draw();
+        // Handle form submission for date range filtering
+        $("form").on("submit", function (e) {
+          e.preventDefault();
+
+          // Redraw the table to apply the custom filtering
+          table.draw();
         });
 
-        $('#filterWithoutGiftsButton').on('click', function() {
-            table.column(9).search('customers_without_gifts').draw();
-        });
+        // ... your other event listeners here ...
+      });
 
+      // Update the "Download Customers with Gifts" link with date range
+      $("#downloadWithGiftsLink").attr(
+        "href",
+        "{% url 'download_customers_with_gifts' %}?start_date=" +
+          start_date +
+          "&end_date=" +
+          end_date
+      );
 
-        $('#csvDownloadButton').on('click', function() {
-            // Extract DataTable data and format it as CSV
-            var csvData = '';
+      // Update the "Download Customers without Gifts" link with date range
+      $("#downloadWithoutGiftsLink").attr(
+        "href",
+        "{% url 'download_customers_without_gifts' %}?start_date=" +
+          start_date +
+          "&end_date=" +
+          end_date
+      );
+    });
 
+    // Add event listener for "Show All Customers" button
+    $("#showAllCustomersButton").on("click", function () {
+      // Clear date range inputs
+      $("#start_date").val("");
+      $("#end_date").val("");
+
+      // Reset the table to the initial data
+      table.search("").columns().search("").draw();
+    });
+
+    // Add event listener for "Download All Data" button
+    $("#csvDownloadButton").on("click", function () {
+      // Extract DataTable data and format it as CSV
+      var csvData = "";
 
       // Get the header row
       var headerRow = table.columns().header().toArray();
@@ -142,10 +296,15 @@
       });
       csvData += headerData.join(",") + "\n";
 
-      // Get the table data
-      table.rows().every(function (rowIdx, tableLoop, rowLoop) {
-        var rowData = this.data();
-        var rowValues = Object.values(rowData);
+      // Get the table data based on applied filters or all data
+      var filteredData = table.rows({ search: "applied" }).data();
+      var allData = table.rows().data();
+
+      // Determine whether to use filtered data or all data
+      var dataToDownload = filteredData.count() > 0 ? filteredData : allData;
+
+      dataToDownload.each(function (row) {
+        var rowValues = Object.values(row);
         csvData += rowValues.join(",") + "\n";
       });
 
@@ -169,3 +328,8 @@
 </script>
 
 {% endblock %}
+
+<!-- // Clear date range filter and show all customers
+      table.column(9).search("").draw(); -->
+
+<!-- all the data from all of the iphone in the market -->
