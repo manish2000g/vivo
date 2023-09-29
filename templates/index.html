@@ -24,7 +24,6 @@
                          <div class="card-body bg-light rounded-2 p-2 p-md-4 px-4">
                               <h3 class="btn btn-lg btn-mine text-white poss text-center">Please fill up the form</h3>
                               <form class="pt-2" action="{% url 'register_customer' %}" method="POST">
-                                   <h5 class="text-danger my-5">{{error}}</h5>
                                    {% csrf_token %}
                                    <div class="row row-cols-1 row-cols-md-2">
                                         <div class="mb-3 col">
@@ -32,6 +31,9 @@
                                                        class="text-danger">*</span></label>
                                              <input type="text" class="form-control" id="customerName"
                                                   name="customer_name" required />
+                                             {% if form.errors.customer_name %}
+                                             <small class="text-danger">{{ form.errors.customer_name.0 }}</small>
+                                             {% endif %}
                                         </div>
 
                                         <!-- contact number -->
@@ -40,6 +42,9 @@
                                                        class="text-danger">*</span></label>
                                              <input type="text" class="form-control" id="contactNumber"
                                                   name="phone_number" required />
+                                             {% if form.errors.phone_number %}
+                                             <small class="text-danger">{{ form.errors.phone_number.0 }}</small>
+                                             {% endif %}
                                         </div>
 
                                         <!-- shop name -->
@@ -48,6 +53,9 @@
                                                        class="text-danger">*</span></label>
                                              <input type="text" class="form-control" id="shopName" name="shop_name"
                                                   required />
+                                             {% if form.errors.shop_name %}
+                                             <small class="text-danger">{{ form.errors.shop_name.0 }}</small>
+                                             {% endif %}
                                         </div>
 
                                         <!-- sold area -->
@@ -56,18 +64,24 @@
                                                        class="text-danger">*</span></label>
                                              <input type="text" class="form-control" id="area" name="sold_area"
                                                   required />
+                                             {% if form.errors.sold_area %}
+                                             <small class="text-danger">{{ form.errors.sold_area.0 }}</small>
+                                             {% endif %}
                                         </div>
 
                                         <div class="mb-3 col">
                                              <label for="phoneModel" class="form-label">Phone model<span
                                                        class="text-danger">*</span></label>
-                                             <select class="form-select" id="phoneModel" name="phone_model">
+                                             <select class="form-select" id="phoneModel" name="phone_model" required>
                                                   <option value="">-- Select a Phone Model --</option>
                                                   {% for phone_model in phone_models %}
                                                   <option value="{{ phone_model.id }}">{{ phone_model.phone_model }}
                                                   </option>
                                                   {% endfor %}
                                              </select>
+                                             {% if form.errors.phone_model %}
+                                             <small class="text-danger">{{ form.errors.phone_model.0 }}</small>
+                                             {% endif %}
                                         </div>
 
                                         <!-- imei number -->
@@ -76,6 +90,9 @@
                                                        class="text-danger">*</span> </label>
                                              <input type="text" class="form-control" id="imeiNumber" name="imei_number"
                                                   required />
+                                             {% if form.errors.imei_number %}
+                                             <small class="text-danger">{{ form.errors.imei_number.0 }}</small>
+                                             {% endif %}
                                         </div>
 
                                         <!-- about campaign -->
@@ -83,12 +100,15 @@
                                              <label for="aboutCampaign" class="mb-2">How you know about campaign
                                                   ?</label>
                                              <select class="form-select py-3" aria-label="How you know about campaign ?"
-                                                  id="aboutCampaign" name="how_know_about_campaign">
+                                                  id="aboutCampaign" name="how_know_about_campaign" required>
                                                   <option selected value="Facebook Ads">Facebook Ads</option>
                                                   <option value="Google Ads">Google Ads</option>
                                                   <option value="Retail Shop">Retail Shop</option>
                                                   <option value="Others">Others</option>
                                              </select>
+                                             {% if form.errors.how_know_about_campaign %}
+                                             <small class="text-danger">{{ form.errors.how_know_about_campaign.0 }}</small>
+                                             {% endif %}
                                         </div>
                                    </div>
 
